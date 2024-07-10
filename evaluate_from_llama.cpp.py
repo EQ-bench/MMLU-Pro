@@ -9,7 +9,7 @@ from datasets import load_dataset
 import requests
 import argparse
 
-def call_llama_cpp(client, instruction, inputs):
+def call_llama_cpp(instruction, inputs):
 	message_text = [{"role": "user", "content": instruction + inputs}]	
 
 	# Endpoint URL for the llama.cpp server, default is localhost and port 8080
