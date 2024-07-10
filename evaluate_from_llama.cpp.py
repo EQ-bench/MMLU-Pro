@@ -134,9 +134,7 @@ def single_request_gpt4(single_question, cot_examples_dict, exist_result):
         prompt += format_example(each["question"], each["options"], each["cot_content"])
     input_text = format_example(question, options)
     try:
-        start = time.time()
         response = call_llama_cpp(prompt, input_text)
-        print("requesting gpt 4 costs: ", time.time() - start)
     except Exception as e:
         print("error", e)
         return None, None, exist
