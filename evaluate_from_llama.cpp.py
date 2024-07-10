@@ -13,7 +13,7 @@ def call_llama_cpp(instruction, inputs):
 	message_text = [{"role": "user", "content": instruction + inputs}]	
 
 	# Endpoint URL for the llama.cpp server, default is localhost and port 8080
-	url = "http://localhost:8080/chat/completion"
+	url = "http://localhost:8080/v1/chat/completions"
 	
 	data = {
 		"model":"gemma-2-9b-it",
@@ -36,7 +36,7 @@ def call_llama_cpp(instruction, inputs):
 
 	if response.status_code == 200:
 		completion = response.json()
-		content = completion['content']
+		content = completion['choices'][0]['message']['content']
 		if content:
 			return content.strip()
 		else:
