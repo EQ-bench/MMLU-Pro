@@ -22,8 +22,8 @@ max_model_length = 4096
 max_new_tokens = 2048
 
 
-def load_mmlu_pro():
-    dataset = load_dataset("TIGER-Lab/MMLU-Pro")
+def load_mmlu_pro(dataset_id):
+    dataset = load_dataset(dataset_id)
     test_df, val_df = dataset["test"], dataset["validation"]
     test_df = preprocess(test_df)
     val_df = preprocess(val_df)
@@ -239,12 +239,12 @@ def eval_cot(subject, model, tokenizer, val_df, test_df, output_path, exists_res
     return accu, corr, wrong
 
 
-def main():
+def main(dataset_id):
     model, tokenizer = load_model()
     if not os.path.exists(save_result_dir):
         os.makedirs(save_result_dir)
 
-    full_test_df, full_val_df = load_mmlu_pro()
+    full_test_df, full_val_df = load_mmlu_pro(dataset_id)
     all_subjects = []
     for each in full_test_df:
         if each["category"] not in all_subjects:
@@ -310,6 +310,7 @@ if __name__ == "__main__":
     parser.add_argument("--gpu_util", "-gu", type=str, default="0.8")
     parser.add_argument("--batch_size", "-bs", type=int, default=1024)
     parser.add_argument("--model", "-m", type=str, default="meta-llama/Llama-2-7b-hf")
+    parser.add_argument("--dataset", "-d", type=str, default="TIGER-Lab/MMLU-Pro")
 
     args = parser.parse_args()
     os.makedirs(args.save_dir, exist_ok=True)
@@ -332,6 +333,6 @@ if __name__ == "__main__":
                                                                                      "_logfile.log"))),
                                   logging.StreamHandler(sys.stdout)])
 
-    main()
+    main(args.dataset)
 
 

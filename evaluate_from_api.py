@@ -101,8 +101,8 @@ def call_api(client, instruction, inputs):
     return result
 
 
-def load_mmlu_pro():
-    dataset = load_dataset("TIGER-Lab/MMLU-Pro")
+def load_mmlu_pro(dataset_id):
+    dataset = load_dataset(dataset_id)
     test_df, val_df = dataset["test"], dataset["validation"]
     test_df = preprocess(test_df)
     val_df = preprocess(val_df)
@@ -242,9 +242,9 @@ def merge_result(res, curr):
     return res
 
 
-def evaluate(subjects):
+def evaluate(subjects, dataset_id):
     client = get_client()
-    test_df, dev_df = load_mmlu_pro()
+    test_df, dev_df = load_mmlu_pro(dataset_id)
     if not subjects:
         subjects = list(test_df.keys())
     print("assigned subjects", subjects)
@@ -319,6 +319,7 @@ if __name__ == "__main__":
                                  "gemini-1.5-flash-latest", "gemini-1.5-pro-latest",
                                  "claude-3-opus-20240229", "claude-3-sonnet-20240229"])
     parser.add_argument("--assigned_subjects", "-a", type=str, default="all")
+    parser.add_argument("--dataset", "-d", type=str, default="TIGER-Lab/MMLU-Pro")
     assigned_subjects = []
     args = parser.parse_args()
     args.model_name = "gpt-4o"
@@ -328,6 +329,6 @@ if __name__ == "__main__":
     else:
         assigned_subjects = args.assigned_subjects.split(",")
     os.makedirs(args.output_dir, exist_ok=True)
-    evaluate(assigned_subjects)
+    evaluate(assigned_subjects, args.dataset)
 
 
