@@ -258,7 +258,7 @@ def save_summary(category_record, output_summary_path):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--output_dir", "-o", type=str, default="eval_results/")
-    parser.add_argument("--selected_subjects", "-sub", type=str, default="all")
+    parser.add_argument("--assigned_subjects", "-a", type=str, default="all")
     parser.add_argument("--dataset", "-d", type=str, default="TIGER-Lab/MMLU-Pro")
 
     assigned_subjects = []
